@@ -16,5 +16,4 @@ public @interface UniqueValue {
     // Especificamos la entidad y el campo a validar
     Class<?> entity();
     String field();
-   // String idField();
 }

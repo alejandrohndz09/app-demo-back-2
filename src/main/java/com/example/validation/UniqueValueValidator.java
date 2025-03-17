@@ -28,24 +28,6 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
             return true;
         }
 
-      /*  try {
-            // Obtener el objeto contenedor (el DTO)
-            Object dto = context.unwrap(Object.class);
-
-            // Obtener el valor del campo ID
-            Field idFieldRef = dto.getClass().getDeclaredField(idField);
-            idFieldRef.setAccessible(true);
-            Object idValue = idFieldRef.get(dto);
-
-            // Si el ID no es nulo ni cero, omitimos la validación (es una actualización)
-            if (idValue != null  && Long.valueOf(idValue.toString()) > 0){
-                return true;
-            }
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Error al acceder al campo ID en el DTO: "+e.getLocalizedMessage(), e);
-        }
-*/
         // Consulta para verificar unicidad en la base de datos
         String jpql = "SELECT COUNT(e) FROM " + entity.getSimpleName() + " e WHERE e." + field + " = :value";
         TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);

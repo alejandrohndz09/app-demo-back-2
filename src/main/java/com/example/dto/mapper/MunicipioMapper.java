@@ -3,10 +3,11 @@ package com.example.dto.mapper;
 import com.example.domain.Municipio;
 import com.example.dto.MunicipioDto;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 
 @RequestScoped
 public class MunicipioMapper implements MapperService<Municipio, MunicipioDto> {
-    @Override
+      @Override
     public void toEntity(Municipio d, MunicipioDto dto) {
         d.setNombre(dto.nombre());
         d.setCodigo(dto.codigo());
@@ -16,6 +17,6 @@ public class MunicipioMapper implements MapperService<Municipio, MunicipioDto> {
     @Override
     public MunicipioDto toDTO(Municipio entity) {
         return new MunicipioDto(entity.getId(),entity.getIdDepartamento(), entity.getCodigo(),
-                entity.getNombre());
+                entity.getNombre(), entity.getDepartamento()==null?null:entity.getDepartamento());
     }
 }

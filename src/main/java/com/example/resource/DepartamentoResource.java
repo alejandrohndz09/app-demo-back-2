@@ -6,6 +6,7 @@ import com.example.tools.PaginatedResponse;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.ConvertGroup;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -35,7 +36,7 @@ public class DepartamentoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid DepartamentoDto dto){
+    public Response create(@Valid  @ConvertGroup(to=DepartamentoDto.OnCreate.class) DepartamentoDto dto){
         return departamentoService.insert(dto);
     }
 
