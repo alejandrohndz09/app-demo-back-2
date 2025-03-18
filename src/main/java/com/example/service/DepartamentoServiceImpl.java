@@ -28,8 +28,19 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
     @Override
     public List<DepartamentoDto> getDepartamentos() {
-        return departamentoRepository.findAll().project(DepartamentoDto.class).list();
-    }
+        return departamentoRepository.findAll()/*.stream().map(d->mapper.toDTO(d)).toList();*/
+                .stream()
+                .map(departamento -> {
+                    // Evitar referencias cíclicas en municipios
+                    departamento.getMunicipios().forEach(municipio -> {
+                        municipio.setDepartamento(null);
+                        municipio.setDistritos(null);
+                    });
+                    return mapper.toDTO(departamento);
+                })
+                .toList();
+    }//
+
 
     @Override
     public PaginatedResponse<DepartamentoDto> getDepartamentosP(int page, String q) {

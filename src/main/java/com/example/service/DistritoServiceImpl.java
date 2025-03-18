@@ -10,6 +10,7 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.Entity;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
@@ -60,6 +61,7 @@ public class DistritoServiceImpl implements DistritoService {
         var entity = new Distrito();
         mapper.toEntity(entity, dto); //Conversion de DTO -> Entity
         distritoRepository.persist(entity); //Insercion
+        distritoRepository.getEntityManager().refresh(entity);
         //Al terminar el proceso se espera que devuelva el DTO del registro insertado
         return Response.created(
                         URI.create("/distritos/" + entity.getId()))

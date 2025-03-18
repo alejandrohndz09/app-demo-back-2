@@ -6,6 +6,7 @@ import com.example.tools.PaginatedResponse;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.ConvertGroup;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -35,7 +36,7 @@ public class DistritoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid DistritoDto dto){
+    public Response create(@Valid @ConvertGroup(to = DistritoDto.OnCreate.class) DistritoDto dto){
         return distritoService.insert(dto);
     }
 

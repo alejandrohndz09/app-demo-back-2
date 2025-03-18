@@ -3,6 +3,7 @@ package com.example.domain;
 import jakarta.persistence.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,8 +18,8 @@ public class Departamento {
     @Basic
     @Column(name = "nombre", nullable = false, length = -1)
     private String nombre;
-    @OneToMany(mappedBy = "departamento")
-    private Collection<Municipio> municipios;
+    @OneToMany(mappedBy = "departamento", fetch = FetchType.EAGER)
+    private List<Municipio> municipios;
 
     public long getId() {
         return id;
@@ -54,14 +55,14 @@ public class Departamento {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, codigo, nombre);
+        return Objects.hash(id, codigo, nombre, municipios);
     }
 
-    public Collection<Municipio> getMunicipios() {
+    public List<Municipio> getMunicipios() {
         return municipios;
     }
 
-    public void setMunicipios(Collection<Municipio> municipios) {
+    public void setMunicipios(List<Municipio> municipios) {
         this.municipios = municipios;
     }
 }

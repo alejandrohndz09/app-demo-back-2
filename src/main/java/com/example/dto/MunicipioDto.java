@@ -3,6 +3,7 @@ package com.example.dto;
 import com.example.domain.Departamento;
 import com.example.dto.mapper.DepartamentoMapper;
 import com.example.dto.mapper.MunicipioMapper;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -22,7 +23,7 @@ public record MunicipioDto(long id, @Positive(message = "Debe seleccionar un dep
     static DepartamentoMapper departamentoMapper = new DepartamentoMapper();
 
     public MunicipioDto(long id, long idDepartamento, String codigo,String nombre, Departamento departamento){
-        this(id,idDepartamento,codigo,nombre,departamentoMapper.toDTO(departamento));
+        this(id,idDepartamento,codigo,nombre, departamento==null?null:departamentoMapper.toDTO(departamento));
     }
 
 
