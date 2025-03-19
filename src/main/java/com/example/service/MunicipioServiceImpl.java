@@ -25,7 +25,11 @@ public class MunicipioServiceImpl implements MunicipioService {
 
     @Override
     public List<MunicipioDto> getMunicipios() {
-        return municipioRepository.findAll().project(MunicipioDto.class).list();
+        return municipioRepository.findAll()//.project(MunicipioDto.class).list();
+                .stream().map(municipio -> {
+                    municipio.getDepartamento().setMunicipios(null);
+                    return mapper.toDTO(municipio);
+                }).toList();
     }
 
     @Override

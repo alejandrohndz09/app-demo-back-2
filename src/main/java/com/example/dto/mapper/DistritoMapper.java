@@ -19,6 +19,6 @@ public class DistritoMapper implements MapperService<Distrito, DistritoDto> {
     @Override
     public DistritoDto toDTO(Distrito entity) {
         return new DistritoDto(entity.getId(), entity.getIdMunicipio(), entity.getCodigo(),
-                entity.getNombre(), entity.getMunicipio());
+                entity.getNombre(), entity.getMunicipio()==null?null:entity.getMunicipio());
     }
 }

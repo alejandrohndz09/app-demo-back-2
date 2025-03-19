@@ -28,14 +28,14 @@ public record DistritoDto(long id,
                           @NotBlank(message = "Campo requerido.")
                           @Size(message = "Mínimo 5 caracteres, máximo 80.", min = 5, max = 80)
                           String nombre,
-                          @JsonBackReference
+//                          @JsonBackReference
                           MunicipioDto municipio)
         implements Serializable {
 
     static MunicipioMapper municipioMapper = new MunicipioMapper();
 
     public DistritoDto(long id, long idMunicipio, String codigo, String nombre, Municipio municipio) {
-        this(id, idMunicipio, codigo, nombre, municipioMapper.toDTO(municipio));
+        this(id, idMunicipio, codigo, nombre, municipio==null?null:municipioMapper.toDTO(municipio));
     }
 
     public interface OnCreate extends Default {} // Validaciones al crear

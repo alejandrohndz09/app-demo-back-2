@@ -26,18 +26,16 @@ public record DepartamentoDto(long id,
                               @NotBlank(message = "Campo requerido.")
                               @Size(min = 5, max = 80, message = "Mínimo 5 caracteres, máximo 80.")
                               String nombre,
-                              @JsonManagedReference()
+                              //@JsonManagedReference()
                               List<MunicipioDto> municipios)
         implements Serializable {
     static MunicipioMapper municipioMapper = new MunicipioMapper();
 
 
-/*
-    public DepartamentoDto(long id, String codigo, String nombre,  @ProjectedFieldName("municipios")  List<Municipio> list) {
-        List<MunicipioDto> municipios=list==null?List.of(): list.stream().map(municipioMapper::toDTO).toList();
-        this(id, codigo, nombre, municipios);
+    public DepartamentoDto(long id, String codigo, String nombre) {
+       // List<MunicipioDto> municipios=list==null?List.of(): list.stream().map(municipioMapper::toDTO).toList();
+        this(id, codigo, nombre, null);
     }
-*/
 
     public interface OnCreate extends Default {
     } // Validaciones al crear

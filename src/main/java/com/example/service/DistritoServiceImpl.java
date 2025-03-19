@@ -26,7 +26,14 @@ public class DistritoServiceImpl implements DistritoService {
 
     @Override
     public List<DistritoDto> getDistritos() {
-        return distritoRepository.findAll().project(DistritoDto.class).list();
+
+        return distritoRepository.findAll()//.project(DistritoDto.class).list();
+                .stream().map(
+                        distrito -> {
+                            distrito.getMunicipio().setDepartamento(null);
+                            return mapper.toDTO(distrito);
+                        }
+                ).toList();
     }
 
     @Override
