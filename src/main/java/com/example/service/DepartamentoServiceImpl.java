@@ -1,7 +1,8 @@
 package com.example.service;
 
 import com.example.domain.Departamento;
-import com.example.dto.DepartamentoDto;
+import com.example.dto.DepartamentoDtoDetail;
+import com.example.dto.DepartamentoDtoRequest;
 import com.example.dto.mapper.DepartamentoMapper;
 import com.example.repository.DepartamentoRepository;
 import com.example.service.interfaces.DepartamentoService;
@@ -10,8 +11,9 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.json.Json;
 import jakarta.ws.rs.core.Response;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
 import java.util.List;
@@ -27,23 +29,16 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     private DepartamentoMapper mapper;
 
     @Override
-    public List<DepartamentoDto> getDepartamentos() {
+    public List<DepartamentoDtoDetail> getDepartamentos() {
         return departamentoRepository.findAll()/*.stream().map(d->mapper.toDTO(d)).toList();*/
                 .stream()
-                .map(departamento -> {
-                    // Evitar referencias cíclicas en municipios
-                    departamento.getMunicipios().forEach(municipio -> {
-                        municipio.setDepartamento(null);
-                        municipio.setDistritos(null);
-                    });
-                    return mapper.toDTO(departamento);
-                })
+                .map(mapper::toDtoDetail)
                 .toList();
     }//
 
 
     @Override
-    public PaginatedResponse<DepartamentoDto> getDepartamentosP(int page, String q) {
+    public PaginatedResponse<DepartamentoDtoDetail> getDepartamentosP(int page, String q) {
         var query = departamentoRepository.findAll();
         //Aplicacion de filtro
         if (q != null) {
@@ -53,7 +48,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
         Page p = new Page(page - 1, 5);
         query.page(p);
         //Conversion de los registros a DTO
-        var queryConverted = query.project(DepartamentoDto.class);
+        var queryConverted = query.project(DepartamentoDtoDetail.class);
         //Encapsular Respuesta
         var pr = new PaginatedResponse<>(queryConverted);
         if (pr.data() != null && !pr.data().isEmpty()) {
@@ -63,36 +58,31 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    public DepartamentoDto getDepartamento(long id) {
+    public DepartamentoDtoDetail getDepartamento(long id) {
         return departamentoRepository.findByIdOptional(id)
-                .map(mapper::toDTO)
+                .map(mapper::toDtoDetail)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el registro"));
     }
 
     @Override
-    public Response insert(DepartamentoDto dto) {
+    public Response insert(DepartamentoDtoRequest dto) {
         var entity = new Departamento();
-        mapper.toEntity(entity, dto); //Conversion de DTO -> Entity
-       // if(departamentoRepository.find("codigo=?",dto.codigo()).count()>0){
-            departamentoRepository.persist(entity); //Insercion
-            //Al terminar el proceso se espera que devuelva el DTO del registro insertado
-            return Response.created(
-                            URI.create("/departamentos/" + entity.getId()))
-                    .entity(mapper.toDTO(entity)) //Conversión del registro insertado a DTO
-                    .build();
-       // }
-       // return Response.status(400).entity(Map.of("message", "Error desconocido.")).build();
+        entity = mapper.toEntity(dto); //Conversion de DTO -> Entity
 
+        departamentoRepository.persist(entity); //Insercion
+        //Al terminar el proceso se espera que devuelva el DTO del registro insertado
+        return Response.created(URI.create("/departamentos/" + entity.getId()))
+                .entity(mapper.toDtoDetail(entity)) //Conversión del registro insertado a DTO
+                .build();
     }
 
     @Override
-    public Response update(long id, DepartamentoDto dto) {
+    public Response update(long id, DepartamentoDtoRequest dto) {
         var original = departamentoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
-
-        mapper.toEntity(original, dto);
+        original=mapper.toEntity(dto);
         departamentoRepository.persist(original);
-        return Response.ok().entity(mapper.toDTO(original)).build();
+        return Response.ok().entity(mapper.toDtoDetail(original)).build();
     }
 
     @Override
@@ -115,7 +105,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
         if (departamentoRepository.deleteById(id)) {
             return Response.ok(Map.of("message", "Operación exitosa: departamento eliminado.")).build();
-        }else{
+        } else {
             return Response.status(400).entity(Map.of("message", "Error desconocido.")).build();
 
         }

@@ -18,7 +18,7 @@ public class Departamento {
     @Basic
     @Column(name = "nombre", nullable = false, length = -1)
     private String nombre;
-    @OneToMany(mappedBy = "departamento", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "departamento", fetch = FetchType.LAZY)
     private List<Municipio> municipios;
 
     public long getId() {

@@ -1,22 +1,22 @@
 package com.example.dto.mapper;
 
 import com.example.domain.Municipio;
-import com.example.dto.MunicipioDto;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import com.example.dto.*;
+import jakarta.inject.Named;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@RequestScoped
-public class MunicipioMapper implements MapperService<Municipio, MunicipioDto> {
-      @Override
-    public void toEntity(Municipio d, MunicipioDto dto) {
-        d.setNombre(dto.nombre());
-        d.setCodigo(dto.codigo());
-        d.setIdDepartamento(dto.idDepartamento());
-    }
+import java.util.List;
 
-    @Override
-    public MunicipioDto toDTO(Municipio entity) {
-        return new MunicipioDto(entity.getId(),entity.getIdDepartamento(), entity.getCodigo(),
-                entity.getNombre(), entity.getDepartamento()==null?null:entity.getDepartamento());
-    }
+@Mapper(componentModel = "cdi" )
+public interface MunicipioMapper {
+    //Instancia del mapper para su uso fuera de él
+   // MunicipioMapper INSTANCE = Mappers.getMapper(MunicipioMapper.class);
+    Municipio toEntity(MunicipioDtoRequest dto);
+
+    MunicipioDto toDto(Municipio entity);
+
+     List<MunicipioDto> toSimpleMunicipios(List<Municipio> municipios) ;
+
 }

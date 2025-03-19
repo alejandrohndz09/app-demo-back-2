@@ -1,6 +1,7 @@
 package com.example.resource;
 
 import com.example.dto.MunicipioDto;
+import com.example.dto.MunicipioDtoRequest;
 import com.example.service.interfaces.MunicipioService;
 import com.example.tools.PaginatedResponse;
 import jakarta.inject.Inject;
@@ -35,14 +36,14 @@ public class MunicipioResource {
 
     @POST
     @Transactional
-    public Response create(@Valid MunicipioDto dto){
+    public Response create(@Valid MunicipioDtoRequest dto){
         return municipioService.insert(dto);
     }
 
     @PUT
     @Transactional
     @Path("{id}")
-    public Response update(@PathParam("id") long id, @Valid MunicipioDto dto){
+    public Response update(@PathParam("id") long id, @Valid MunicipioDtoRequest dto){
         return municipioService.update(id,dto);
     }
 

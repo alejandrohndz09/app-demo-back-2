@@ -1,24 +1,37 @@
 package com.example.dto.mapper;
 
 import com.example.domain.Distrito;
+import com.example.domain.Distrito;
 import com.example.domain.Municipio;
-import com.example.dto.DistritoDto;
+import com.example.dto.*;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
 
-@RequestScoped
-public class DistritoMapper implements MapperService<Distrito, DistritoDto> {
-     @Override
-    public void toEntity(Distrito d, DistritoDto dto) {
-        d.setNombre(dto.nombre());
-        d.setCodigo(dto.codigo());
-        d.setIdMunicipio(dto.idMunicipio());
+import java.util.List;
 
-    }
+@Mapper(componentModel = "cdi", uses = {MunicipioMapper.class})
+public interface DistritoMapper {
+   // DistritoMapper INSTANCE = Mappers.getMapper(DistritoMapper.class);
 
-    @Override
-    public DistritoDto toDTO(Distrito entity) {
-        return new DistritoDto(entity.getId(), entity.getIdMunicipio(), entity.getCodigo(),
-                entity.getNombre(), entity.getMunicipio()==null?null:entity.getMunicipio());
-    }
+    Distrito toEntity(DistritoDtoRequest dto);
+
+    DistritoDto toDto(Distrito entity);
+
+    /* MAPEO AUTOMATICO
+    * MapStruct detecta que municipio es un objeto y busca un método en MunicipioMapper que lo convierta en MunicipioDto.
+    * Como en MunicipioMapper ya tenemos MunicipioDto toDto(Municipio entity), MapStruct automáticamente usa ese método
+    * para convertir el objeto.
+    * No es necesario mapear manualmente la lista en DepartamentoMapper. MapStruct lo hace
+    * */
+    @Mapping(target = "municipio", source = "municipio"/*, qualifiedByName = "toMunicipioDto"*/)
+    DistritoDtoDetail toDtoDetail(Distrito entity);
+
+  /*  @Named("toMunicipioDto")
+    default MunicipioDto toMunicipioDto(Municipio municipio){
+        return MunicipioMapper.INSTANCE.toDto(municipio);
+    }*/
+
 }
