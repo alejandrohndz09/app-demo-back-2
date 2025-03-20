@@ -1,6 +1,6 @@
 package com.example.resource;
 
-import com.example.dto.MunicipioDto;
+import com.example.dto.MunicipioDtoDetail;
 import com.example.dto.MunicipioDtoRequest;
 import com.example.service.interfaces.MunicipioService;
 import com.example.tools.PaginatedResponse;
@@ -18,19 +18,19 @@ public class MunicipioResource {
     @Inject
     MunicipioService municipioService;
     @GET
-    public List<MunicipioDto> getMunicipios(){
+    public List<MunicipioDtoDetail> getMunicipios(){
         return municipioService.getMunicipios();
     }
 
     @GET
     @Path("paginated")
-    public PaginatedResponse<MunicipioDto> getMunicipios(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q){
+    public PaginatedResponse<MunicipioDtoDetail> getMunicipios(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q){
         return municipioService.getMunicipiosP(p,q);
     }
 
     @GET
     @Path("{id}")
-    public MunicipioDto getMunicipio(@PathParam("id") long id){
+    public MunicipioDtoDetail getMunicipio(@PathParam("id") long id){
         return municipioService.getMunicipio(id);
     }
 

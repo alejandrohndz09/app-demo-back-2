@@ -63,7 +63,7 @@ public class DistritoServiceImpl implements DistritoService {
     @Override
     public Response insert(DistritoDtoRequest dto) {
         var entity = new Distrito();
-        entity= mapper.toEntity( dto); //Conversion de DTO -> Entity
+        mapper.toEntity(dto,entity); //Conversion de DTO -> Entity
         distritoRepository.persist(entity); //Insercion
         distritoRepository.getEntityManager().refresh(entity);
         //Al terminar el proceso se espera que devuelva el DTO del registro insertado
@@ -78,8 +78,12 @@ public class DistritoServiceImpl implements DistritoService {
         var original = distritoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
 
-        original=mapper.toEntity(dto);
+        mapper.toEntity(dto,original);
         distritoRepository.persist(original);
+        // Forzar sincronización con la BD
+        distritoRepository.getEntityManager().flush();
+        // Refrescar desde la BD
+        distritoRepository.getEntityManager().refresh(original);
         return Response.ok().entity(mapper.toDtoDetail(original)).build();
     }
 

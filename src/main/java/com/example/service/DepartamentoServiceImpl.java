@@ -67,7 +67,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @Override
     public Response insert(DepartamentoDtoRequest dto) {
         var entity = new Departamento();
-        entity = mapper.toEntity(dto); //Conversion de DTO -> Entity
+        mapper.toEntity(dto,entity); //Conversion de DTO -> Entity
 
         departamentoRepository.persist(entity); //Insercion
         //Al terminar el proceso se espera que devuelva el DTO del registro insertado
@@ -80,7 +80,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     public Response update(long id, DepartamentoDtoRequest dto) {
         var original = departamentoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
-        original=mapper.toEntity(dto);
+        mapper.toEntity(dto,original);
         departamentoRepository.persist(original);
         return Response.ok().entity(mapper.toDtoDetail(original)).build();
     }

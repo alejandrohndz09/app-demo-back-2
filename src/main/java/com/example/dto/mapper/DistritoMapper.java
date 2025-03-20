@@ -5,18 +5,17 @@ import com.example.domain.Distrito;
 import com.example.domain.Municipio;
 import com.example.dto.*;
 import jakarta.enterprise.context.RequestScoped;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "cdi", uses = {MunicipioMapper.class})
+@Mapper(componentModel = "jakarta-cdi", injectionStrategy = InjectionStrategy.FIELD, uses = {MunicipioMapper.class})
 public interface DistritoMapper {
-   // DistritoMapper INSTANCE = Mappers.getMapper(DistritoMapper.class);
+    DistritoMapper INSTANCE = Mappers.getMapper(DistritoMapper.class);
 
-    Distrito toEntity(DistritoDtoRequest dto);
+    @Mapping(target = "municipio", ignore = true)
+    void toEntity(DistritoDtoRequest dto, @MappingTarget Distrito entity);
 
     DistritoDto toDto(Distrito entity);
 
@@ -26,12 +25,6 @@ public interface DistritoMapper {
     * para convertir el objeto.
     * No es necesario mapear manualmente la lista en DepartamentoMapper. MapStruct lo hace
     * */
-    @Mapping(target = "municipio", source = "municipio"/*, qualifiedByName = "toMunicipioDto"*/)
+    @Mapping(target = "municipio", source = "municipio")
     DistritoDtoDetail toDtoDetail(Distrito entity);
-
-  /*  @Named("toMunicipioDto")
-    default MunicipioDto toMunicipioDto(Municipio municipio){
-        return MunicipioMapper.INSTANCE.toDto(municipio);
-    }*/
-
 }
