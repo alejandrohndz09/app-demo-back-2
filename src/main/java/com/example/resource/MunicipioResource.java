@@ -7,6 +7,7 @@ import com.example.tools.PaginatedResponse;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.ConvertGroup;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -36,7 +37,7 @@ public class MunicipioResource {
 
     @POST
     @Transactional
-    public Response create(@Valid MunicipioDtoRequest dto){
+    public Response create(@Valid @ConvertGroup(to= MunicipioDtoRequest.OnCreate.class) MunicipioDtoRequest dto){
         return municipioService.insert(dto);
     }
 

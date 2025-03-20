@@ -63,6 +63,7 @@ public class MunicipioServiceImpl implements MunicipioService {
         var entity = new Municipio();
         mapper.toEntity(dto,entity); //Conversion de DTO -> Entity
         municipioRepository.persist(entity); //Insercion
+        municipioRepository.getEntityManager().refresh(entity);
         //Al terminar el proceso se espera que devuelva el DTO del registro insertado
         return Response.created(URI.create("/municipios/" + entity.getId()))
                 .entity(mapper.toDtoDetail(entity)) //Conversión del registro insertado a DTO
@@ -76,6 +77,10 @@ public class MunicipioServiceImpl implements MunicipioService {
 
         mapper.toEntity(dto,original);
         municipioRepository.persist(original);
+        // Forzar sincronización con la BD
+        municipioRepository.getEntityManager().flush();
+        municipioRepository.getEntityManager().refresh(original);
+
         return Response.ok().entity(mapper.toDtoDetail(original)).build();
     }
 
