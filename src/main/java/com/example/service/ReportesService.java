@@ -39,30 +39,29 @@ public class ReportesService {
         // Generar el formato solicitado
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String contentType;
-        String fileName;
+        String extensionFile;
 
         switch (format.toLowerCase()) {
             case "word":
                 contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                fileName = "reporte.docx";
+                extensionFile= "docx";
                 Formatos.exportToWord(jasperPrint, outputStream);
                 break;
             case "excel":
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                fileName = "reporte.xlsx";
+                extensionFile="xlsx";
                 Formatos.exportToExcel(jasperPrint, outputStream);
                 break;
             case "pdf":
             default:
                 contentType = "application/pdf";
-                fileName = "reporte.pdf";
+                extensionFile="pdf";
                 JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
                 break;
         }
         // Retornar el reporte en el formato seleccionado
-        return Response.ok(outputStream.toByteArray())
-                .type(contentType)
-                .header("Content-Disposition", "inline; filename=" + fileName)
+        return Response.ok(outputStream.toByteArray(),contentType)
+                .header("Content-Disposition",  "attachment; filename=\"reporte."+ extensionFile+"\"")
                 .build();
     }
 }
