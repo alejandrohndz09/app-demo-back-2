@@ -12,9 +12,11 @@ import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JRException;
 import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,6 +24,8 @@ import java.util.NoSuchElementException;
 public class DistritoServiceImpl implements DistritoService {
     @Inject
     private DistritoRepository distritoRepository;
+    @Inject
+    private ReportesService reportesService;
     @Inject
     private DistritoMapper mapper;
 
@@ -93,5 +97,9 @@ public class DistritoServiceImpl implements DistritoService {
             return Response.ok()/*.entity("Operación exitosa.")*/.build();
         }
         return Response.status(400)/*.entity("No se encontró registro")*/.build();
+    }
+    @Override
+    public Response generarReporte(String format) throws JRException, SQLException {
+        return reportesService.generarReporte(format, null, "distritos");
     }
 }

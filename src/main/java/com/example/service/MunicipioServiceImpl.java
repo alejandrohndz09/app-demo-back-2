@@ -12,9 +12,10 @@ import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
-import org.mapstruct.factory.Mappers;
+import net.sf.jasperreports.engine.JRException;
 
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,6 +23,8 @@ import java.util.NoSuchElementException;
 public class MunicipioServiceImpl implements MunicipioService {
     @Inject
     private MunicipioRepository municipioRepository;
+    @Inject
+    private ReportesService reportesService;
     @Inject
     private MunicipioMapper mapper;
 
@@ -90,5 +93,9 @@ public class MunicipioServiceImpl implements MunicipioService {
             return Response.ok()/*.entity("Operación exitosa.")*/.build();
         }
         return Response.status(400)/*.entity("No se encontró registro")*/.build();
+    }
+    @Override
+    public Response generarReporte(String format) throws JRException, SQLException {
+        return reportesService.generarReporte(format, null, "municipios");
     }
 }

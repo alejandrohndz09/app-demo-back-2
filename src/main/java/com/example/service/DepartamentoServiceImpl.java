@@ -12,19 +12,17 @@ import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-
+import net.sf.jasperreports.engine.*;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.sql.SQLException;
+import java.util.*;
 
 @ApplicationScoped
 public class DepartamentoServiceImpl implements DepartamentoService {
     @Inject
     private DepartamentoRepository departamentoRepository;
+    @Inject
+    ReportesService reportesService;
     @Inject
     private DepartamentoMapper mapper;
 
@@ -67,7 +65,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @Override
     public Response insert(DepartamentoDtoRequest dto) {
         var entity = new Departamento();
-        mapper.toEntity(dto,entity); //Conversion de DTO -> Entity
+        mapper.toEntity(dto, entity); //Conversion de DTO -> Entity
 
         departamentoRepository.persist(entity); //Insercion
         //Al terminar el proceso se espera que devuelva el DTO del registro insertado
@@ -80,7 +78,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     public Response update(long id, DepartamentoDtoRequest dto) {
         var original = departamentoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
-        mapper.toEntity(dto,original);
+        mapper.toEntity(dto, original);
         departamentoRepository.persist(original);
         return Response.ok().entity(mapper.toDtoDetail(original)).build();
     }
@@ -110,5 +108,10 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
         }
 
+    }
+
+    @Override
+    public Response generarReporte(String format) throws JRException, SQLException {
+       return reportesService.generarReporte(format, null, "departamentos");
     }
 }

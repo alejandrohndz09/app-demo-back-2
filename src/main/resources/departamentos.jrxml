@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="70" rightMargin="70" topMargin="20" bottomMargin="20" uuid="a0ec2916-7207-4a8a-b7ff-fe7aeabf3546">
+    <property name="ireport.zoom" value="1.6105100000000008"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+    <subDataset name="Empty Dataset1" uuid="25b26511-fc1d-4518-93ab-438c2f2cf597"/>
+    <queryString>
+        <![CDATA[SELECT
+     d.*,
+     count(m."idDepartamento") as "numeroMunicipios"
+ FROM departamento d
+ LEFT JOIN municipio m ON d.id = m."idDepartamento"
+ GROUP BY d.id;]]>
+    </queryString>
+    <field name="id" class="java.lang.Long"/>
+    <field name="codigo" class="java.lang.String"/>
+    <field name="nombre" class="java.lang.String"/>
+    <field name="numeroMunicipios" class="java.lang.Long"/>
+
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="32" splitType="Stretch">
+            <staticText>
+                <reportElement x="78" y="1" width="317" height="31" uuid="184e9c53-3408-42e6-835c-1b71c87988d6"/>
+                <textElement textAlignment="Center">
+                    <font size="19" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Listado de Departamentos]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="66" splitType="Stretch">
+            <staticText>
+                <reportElement x="21" y="45" width="44" height="21" uuid="df72dc8f-d9b6-4b59-92cf-46faa51166e0"/>
+                <textElement>
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Código]]></text>
+            </staticText>
+            <line>
+                <reportElement x="-41" y="65" width="555" height="1" uuid="b19fd773-69da-4a92-96fd-0b968ac754bb"/>
+            </line>
+            <staticText>
+                <reportElement x="180" y="45" width="91" height="21" uuid="f2ac4075-c2c0-4e5b-8ab2-6f6c9f609c01"/>
+                <textElement>
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Departamento]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="380" y="45" width="91" height="21" uuid="0ed80db3-cd56-4355-bbbe-e8d77f9d6807"/>
+                <textElement verticalAlignment="Top">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[No. de municipios]]></text>
+            </staticText>
+            <line>
+                <reportElement x="-40" y="41" width="555" height="1" uuid="c43018de-ae08-45df-803c-6fcdeefc5028"/>
+            </line>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="22" splitType="Stretch">
+            <textField>
+                <reportElement x="21" y="2" width="100" height="20" uuid="1ca106c6-1921-42dc-aec7-157ba827002e"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="180" y="0" width="190" height="20" uuid="e03dce9b-3c45-4faa-a63e-6255d37e3672"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="380" y="0" width="100" height="20" uuid="61eec143-fb47-47ee-b73e-da5b1bf26386"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{numeroMunicipios}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="82" splitType="Stretch">
+            <textField evaluationTime="Report">
+                <reportElement x="410" y="60" width="100" height="20" uuid="540c9497-44ce-4167-b9e5-4f245eee7560"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="-40" y="12" width="106" height="21" uuid="e43dc68e-b6a2-486a-b883-2187d9272ef3"/>
+                <textElement verticalAlignment="Bottom">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Fecha de generación:]]></text>
+            </staticText>
+            <textField pattern="EEEEE dd MMMMM yyyy">
+                <reportElement x="66" y="12" width="197" height="21" uuid="0bbe3138-fa0c-44af-ba82-b4af84942fb8"/>
+                <textElement verticalAlignment="Bottom"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="-40" y="33" width="100" height="20" uuid="9764db2d-b752-418d-a4b0-d06fb20dd58f"/>
+                <textElement textAlignment="Left" verticalAlignment="Top">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Hora de generación:]]></text>
+            </staticText>
+            <textField >
+                <reportElement x="60" y="33" width="197" height="20" uuid="50310a37-a3a9-4f82-a4d0-db8699ccf66a"/>
+                <textElement verticalAlignment="Top"/>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("HH:mm:ss").format(new java.util.Date())]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>
