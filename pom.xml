@@ -70,6 +70,11 @@
             <scope>provided</scope> <!-- Solo necesario en compilación -->
         </dependency>
         <dependency>
+            <groupId>io.quarkiverse.jasperreports</groupId>
+            <artifactId>quarkus-jasperreports</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
