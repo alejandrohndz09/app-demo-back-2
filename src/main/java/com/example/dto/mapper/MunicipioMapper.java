@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "jakarta-cdi", injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "jakarta-cdi", injectionStrategy = InjectionStrategy.FIELD, uses = DistritoMapper.class)
 public interface MunicipioMapper {
     //Instancia del mapper para su uso fuera de él
     MunicipioMapper INSTANCE = Mappers.getMapper(MunicipioMapper.class);
@@ -22,6 +22,7 @@ public interface MunicipioMapper {
 
     MunicipioDto toDto(Municipio entity);
     @Mapping(target = "departamento", source = "departamento")
+    @Mapping(target = "distritos", source = "distritos")
     MunicipioDtoDetail toDtoDetail(Municipio entity);
 
 }

@@ -42,12 +42,12 @@ public class ReportesService {
         String extensionFile;
 
         switch (format.toLowerCase()) {
-            case "word":
+            case "docx":
                 contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
                 extensionFile= "docx";
                 Formatos.exportToWord(jasperPrint, outputStream);
                 break;
-            case "excel":
+            case "xlsx":
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 extensionFile="xlsx";
                 Formatos.exportToExcel(jasperPrint, outputStream);

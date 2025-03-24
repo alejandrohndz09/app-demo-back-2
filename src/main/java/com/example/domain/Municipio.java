@@ -20,7 +20,7 @@ public class Municipio {
     @Basic
     @Column(name = "nombre", nullable = false, length = -1)
     private String nombre;
-    @OneToMany(mappedBy = "municipio")
+    @OneToMany(mappedBy = "municipio", fetch = FetchType.EAGER)
     private Collection<Distrito> distritos;
     @ManyToOne
     @JoinColumn(insertable=false, updatable=false, name = "\"idDepartamento\"", referencedColumnName = "id", nullable = false)
