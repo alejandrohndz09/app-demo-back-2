@@ -30,7 +30,7 @@ public class DistritoServiceImpl implements DistritoService {
     private DistritoMapper mapper;
 
     @Override
-    public List<DistritoDtoDetail> getDistritos() {
+    public List<DistritoDtoRequest> getDistritos() {
 
         return distritoRepository.findAll()//.project(DistritoDtoRequest.class).list();
                 .stream().map(mapper::toDtoDetail
@@ -38,7 +38,7 @@ public class DistritoServiceImpl implements DistritoService {
     }
 
     @Override
-    public PaginatedResponse<DistritoDtoDetail> getDistritosP(int page, String q) {
+    public PaginatedResponse<DistritoDtoRequest> getDistritosP(int page, String q) {
         var query = distritoRepository.findAll();
         //Aplicacion de filtro
         if (q != null) {
@@ -48,7 +48,7 @@ public class DistritoServiceImpl implements DistritoService {
         Page p = new Page(page - 1, 5);
         query.page(p);
         //Conversion de los registros a DTO
-        var queryConverted = query.project(DistritoDtoDetail.class);
+        var queryConverted = query.project(DistritoDtoRequest.class);
         //Encapsular Respuesta
         var pr = new PaginatedResponse<>(queryConverted);
         if (pr.data() != null && !pr.data().isEmpty()) {
@@ -58,7 +58,7 @@ public class DistritoServiceImpl implements DistritoService {
     }
 
     @Override
-    public DistritoDtoDetail getDistrito(long id) {
+    public DistritoDtoRequest getDistrito(long id) {
         return distritoRepository.findByIdOptional(id)
                 .map(mapper::toDtoDetail)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el registro"));

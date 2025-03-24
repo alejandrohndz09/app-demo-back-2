@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.validation.groups.Default;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.example.domain.Departamento}
@@ -20,7 +21,8 @@ public record DepartamentoDtoRequest(long id,
                                      String codigo,
                                      @NotBlank(message = "Campo requerido.")
                                      @Size(min = 5, max = 80, message = "Mínimo 5 caracteres, máximo 80.")
-                                     String nombre
+                                     String nombre,
+                                     List<MunicipioDtoRequest> municipios
                                     )
         implements Serializable {
 

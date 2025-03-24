@@ -20,16 +20,21 @@ public record DistritoDtoRequest(long id,
                                  long idMunicipio,
                                  @NotBlank(message = "Campo requerido.")
                                  @Size(min = 3, max = 3, message = "El código debe tener 3 carateres.")
-                                 @UniqueValue(entity = Distrito.class, field = "codigo", message = "El código ya está registrado.", groups = DistritoDtoRequest.OnCreate.class)
+                                 @UniqueValue(entity = Distrito.class, field = "codigo",
+                                         message = "El código ya está registrado.", groups = DistritoDtoRequest.OnCreate.class)
                                  String codigo,
                                  @NotBlank(message = "Campo requerido.")
                                  @Size(message = "Mínimo 5 caracteres, máximo 80.", min = 5, max = 80)
-                                 String nombre)
+                                 String nombre,
+                                 MunicipioDto municipio)
         implements Serializable {
 
     public interface OnCreate extends Default {
     } // Validaciones al crear
 
-//    public interface OnUpdate {
-//    } // Validaciones al actualizar
+    public interface OnUpdate {
+    } // Validaciones al actualizar
+
+    public interface onRead {
+    } // Sin validaciones
 }

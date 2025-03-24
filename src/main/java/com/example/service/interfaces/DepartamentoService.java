@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface DepartamentoService {
-    public List<DepartamentoDtoDetail> getDepartamentos();
-    public PaginatedResponse<DepartamentoDtoDetail> getDepartamentosP(int page, String q);
-    public DepartamentoDtoDetail getDepartamento(long id);
+    public List<DepartamentoDtoRequest> getDepartamentos();
+    public PaginatedResponse<DepartamentoDtoRequest> getDepartamentosP(int page, String q);
+    public DepartamentoDtoRequest getDepartamento(long id);
     public Response insert(DepartamentoDtoRequest departamento);
     public Response update(long id, DepartamentoDtoRequest dto);
     public Response delete(long id);

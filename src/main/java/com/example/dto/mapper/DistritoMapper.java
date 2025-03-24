@@ -16,8 +16,9 @@ public interface DistritoMapper {
 
     @Mapping(target = "municipio", ignore = true)
     void toEntity(DistritoDtoRequest dto, @MappingTarget Distrito entity);
-
-    DistritoDto toDto(Distrito entity);
+    @Named("toDtoDistrito")
+    @Mapping(target = "municipio", ignore = true)
+    DistritoDtoRequest toDto(Distrito entity);
 
     /* MAPEO AUTOMATICO
     * MapStruct detecta que municipio es un objeto y busca un método en MunicipioMapper que lo convierta en MunicipioDto.
@@ -25,6 +26,6 @@ public interface DistritoMapper {
     * para convertir el objeto.
     * No es necesario mapear manualmente la lista en DepartamentoMapper. MapStruct lo hace
     * */
-    @Mapping(target = "municipio", source = "municipio")
-    DistritoDtoDetail toDtoDetail(Distrito entity);
+    @Mapping(target = "municipio", source = "municipio", qualifiedByName = "toDtoMunicipio")
+    DistritoDtoRequest toDtoDetail(Distrito entity);
 }

@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface DistritoService {
-    public List<DistritoDtoDetail> getDistritos();
-    public PaginatedResponse<DistritoDtoDetail> getDistritosP(int page, String q);
-    public DistritoDtoDetail getDistrito(long id);
+    public List<DistritoDtoRequest> getDistritos();
+    public PaginatedResponse<DistritoDtoRequest> getDistritosP(int page, String q);
+    public DistritoDtoRequest getDistrito(long id);
     public Response insert(DistritoDtoRequest departamento);
     public Response update(long id, DistritoDtoRequest dto);
     public Response delete(long id);

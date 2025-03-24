@@ -21,19 +21,19 @@ public class DistritoResource {
     @Inject
     DistritoService distritoService;
     @GET
-    public List<DistritoDtoDetail> getDistritos(){
+    public List<DistritoDtoRequest> getDistritos(){
         return distritoService.getDistritos();
     }
 
     @GET
     @Path("paginated")
-    public PaginatedResponse<DistritoDtoDetail> getDistritos(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q){
+    public PaginatedResponse<DistritoDtoRequest> getDistritos(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q){
         return distritoService.getDistritosP(p,q);
     }
 
     @GET
     @Path("{id}")
-    public DistritoDtoDetail getDistrito(@PathParam("id") long id){
+    public DistritoDtoRequest getDistrito(@PathParam("id") long id){
         return distritoService.getDistrito(id);
     }
 

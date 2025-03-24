@@ -19,19 +19,10 @@ public interface DepartamentoMapper {
 
     @Mapping(target = "municipios", ignore = true)
     void toEntity(DepartamentoDtoRequest dto,  @MappingTarget Departamento entity);
+    @Named("toDtoDepartamento")
+    @Mapping(target = "municipios", ignore = true)
+    DepartamentoDtoRequest toDto(Departamento entity);
 
-    DepartamentoDto toDto(Departamento entity);
-
-    @Mapping(target = "municipios", source = "municipios"/*, qualifiedByName = "toSimpleMunicipios"*/)
-    DepartamentoDtoDetail toDtoDetail(Departamento entity);
-
-  /*  *//* En este caso se mappeo manualmente el listado de <municipioDto>, pero se puede hacer automáticamente
-    véase el ejemplo en DistritoMapper*//*
-    @Named("toSimpleMunicipios")
-    default List<MunicipioDto> toSimpleMunicipios(List<Municipio> municipios) {
-        return municipios == null ? List.of() :
-                municipios.stream()
-                        .map(MunicipioMapper.INSTANCE::toDto)
-                        .toList();
-    }*/
+    @Mapping(target = "municipios", source = "municipios", qualifiedByName = "toDtoMunicipio")//deseo mapear los municipios simples O sea toDTO en el MunicipioMapper
+    DepartamentoDtoRequest toDtoDetail(Departamento entity);
 }

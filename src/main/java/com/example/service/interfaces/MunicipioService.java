@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface MunicipioService {
-    public List<MunicipioDtoDetail> getMunicipios();
-    public PaginatedResponse<MunicipioDtoDetail> getMunicipiosP(int page, String q);
-    public MunicipioDtoDetail getMunicipio(long id);
+    public List<MunicipioDtoRequest> getMunicipios();
+    public PaginatedResponse<MunicipioDtoRequest> getMunicipiosP(int page, String q);
+    public MunicipioDtoRequest getMunicipio(long id);
     public Response insert(MunicipioDtoRequest departamento);
     public Response update(long id, MunicipioDtoRequest dto);
     public Response delete(long id);

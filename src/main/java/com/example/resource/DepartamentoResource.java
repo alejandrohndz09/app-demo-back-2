@@ -1,6 +1,6 @@
 package com.example.resource;
 
-import com.example.dto.DepartamentoDtoDetail;
+import com.example.dto.DepartamentoDtoRequest;
 import com.example.dto.DepartamentoDtoRequest;
 import com.example.service.ReportesService;
 import com.example.service.interfaces.DepartamentoService;
@@ -22,19 +22,19 @@ public class DepartamentoResource {
     DepartamentoService departamentoService;
 
     @GET
-    public List<DepartamentoDtoDetail> getDepartamentos() {
+    public List<DepartamentoDtoRequest> getDepartamentos() {
         return departamentoService.getDepartamentos();
     }
 
     @GET
     @Path("paginated")
-    public PaginatedResponse<DepartamentoDtoDetail> getDepartamentos(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q) {
+    public PaginatedResponse<DepartamentoDtoRequest> getDepartamentos(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q) {
         return departamentoService.getDepartamentosP(p, q);
     }
 
     @GET
     @Path("{id}")
-    public DepartamentoDtoDetail getDepartamento(@PathParam("id") long id) {
+    public DepartamentoDtoRequest getDepartamento(@PathParam("id") long id) {
         return departamentoService.getDepartamento(id);
     }
 

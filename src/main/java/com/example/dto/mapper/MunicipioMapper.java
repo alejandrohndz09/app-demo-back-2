@@ -19,10 +19,12 @@ public interface MunicipioMapper {
     @Mapping(target = "distritos", ignore = true)
     @Mapping(target = "departamento", ignore = true)
     void toEntity(MunicipioDtoRequest dto, @MappingTarget Municipio entity);
-
-    MunicipioDto toDto(Municipio entity);
-    @Mapping(target = "departamento", source = "departamento")
-    @Mapping(target = "distritos", source = "distritos")
-    MunicipioDtoDetail toDtoDetail(Municipio entity);
+    @Named("toDtoMunicipio")
+    @Mapping(target = "departamento", ignore = true)
+    @Mapping(target = "distritos", ignore = true)
+    MunicipioDtoRequest toDto(Municipio entity);
+    @Mapping(target = "departamento", source = "departamento", qualifiedByName = "toDtoDepartamento")
+    @Mapping(target = "distritos", source = "distritos",qualifiedByName = "toDtoDistrito")
+    MunicipioDtoRequest toDtoDetail(Municipio entity);
 
 }

@@ -1,7 +1,7 @@
 package com.example.service;
 
 import com.example.domain.Departamento;
-import com.example.dto.DepartamentoDtoDetail;
+import com.example.dto.DepartamentoDtoRequest;
 import com.example.dto.DepartamentoDtoRequest;
 import com.example.dto.mapper.DepartamentoMapper;
 import com.example.repository.DepartamentoRepository;
@@ -27,7 +27,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     private DepartamentoMapper mapper;
 
     @Override
-    public List<DepartamentoDtoDetail> getDepartamentos() {
+    public List<DepartamentoDtoRequest> getDepartamentos() {
         return departamentoRepository.findAll()/*.stream().map(d->mapper.toDTO(d)).toList();*/
                 .stream()
                 .map(mapper::toDtoDetail)
@@ -36,7 +36,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
 
     @Override
-    public PaginatedResponse<DepartamentoDtoDetail> getDepartamentosP(int page, String q) {
+    public PaginatedResponse<DepartamentoDtoRequest> getDepartamentosP(int page, String q) {
         var query = departamentoRepository.findAll();
         //Aplicacion de filtro
         if (q != null) {
@@ -46,7 +46,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
         Page p = new Page(page - 1, 5);
         query.page(p);
         //Conversion de los registros a DTO
-        var queryConverted = query.project(DepartamentoDtoDetail.class);
+        var queryConverted = query.project(DepartamentoDtoRequest.class);
         //Encapsular Respuesta
         var pr = new PaginatedResponse<>(queryConverted);
         if (pr.data() != null && !pr.data().isEmpty()) {
@@ -56,7 +56,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    public DepartamentoDtoDetail getDepartamento(long id) {
+    public DepartamentoDtoRequest getDepartamento(long id) {
         return departamentoRepository.findByIdOptional(id)
                 .map(mapper::toDtoDetail)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el registro"));
