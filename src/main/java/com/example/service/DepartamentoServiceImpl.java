@@ -1,8 +1,7 @@
 package com.example.service;
 
 import com.example.domain.Departamento;
-import com.example.dto.DepartamentoDtoRequest;
-import com.example.dto.DepartamentoDtoRequest;
+import com.example.dto.DepartamentoDto;
 import com.example.dto.mapper.DepartamentoMapper;
 import com.example.repository.DepartamentoRepository;
 import com.example.service.interfaces.DepartamentoService;
@@ -27,7 +26,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     private DepartamentoMapper mapper;
 
     @Override
-    public List<DepartamentoDtoRequest> getDepartamentos() {
+    public List<DepartamentoDto> getDepartamentos() {
         return departamentoRepository.findAll()/*.stream().map(d->mapper.toDTO(d)).toList();*/
                 .stream()
                 .map(mapper::toDtoDetail)
@@ -36,7 +35,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
 
 
     @Override
-    public PaginatedResponse<DepartamentoDtoRequest> getDepartamentosP(int page, String q) {
+    public PaginatedResponse<DepartamentoDto> getDepartamentosP(int page, String q) {
         var query = departamentoRepository.findAll();
         //Aplicacion de filtro
         if (q != null) {
@@ -46,7 +45,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
         Page p = new Page(page - 1, 5);
         query.page(p);
         //Conversion de los registros a DTO
-        var queryConverted = query.project(DepartamentoDtoRequest.class);
+        var queryConverted = query.project(DepartamentoDto.class);
         //Encapsular Respuesta
         var pr = new PaginatedResponse<>(queryConverted);
         if (pr.data() != null && !pr.data().isEmpty()) {
@@ -56,14 +55,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    public DepartamentoDtoRequest getDepartamento(long id) {
+    public DepartamentoDto getDepartamento(long id) {
         return departamentoRepository.findByIdOptional(id)
                 .map(mapper::toDtoDetail)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el registro"));
     }
 
     @Override
-    public Response insert(DepartamentoDtoRequest dto) {
+    public Response insert(DepartamentoDto dto) {
         var entity = new Departamento();
         mapper.toEntity(dto, entity); //Conversion de DTO -> Entity
 
@@ -75,7 +74,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    public Response update(long id, DepartamentoDtoRequest dto) {
+    public Response update(long id, DepartamentoDto dto) {
         var original = departamentoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
         mapper.toEntity(dto, original);

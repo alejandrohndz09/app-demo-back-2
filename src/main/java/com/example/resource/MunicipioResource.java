@@ -1,7 +1,6 @@
 package com.example.resource;
 
-import com.example.dto.MunicipioDtoRequest;
-import com.example.dto.MunicipioDtoRequest;
+import com.example.dto.MunicipioDto;
 import com.example.service.interfaces.MunicipioService;
 import com.example.tools.PaginatedResponse;
 import jakarta.inject.Inject;
@@ -21,32 +20,32 @@ public class MunicipioResource {
     @Inject
     MunicipioService municipioService;
     @GET
-    public List<MunicipioDtoRequest> getMunicipios(){
+    public List<MunicipioDto> getMunicipios(){
         return municipioService.getMunicipios();
     }
 
     @GET
     @Path("paginated")
-    public PaginatedResponse<MunicipioDtoRequest> getMunicipios(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q){
+    public PaginatedResponse<MunicipioDto> getMunicipios(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q){
         return municipioService.getMunicipiosP(p,q);
     }
 
     @GET
     @Path("{id}")
-    public MunicipioDtoRequest getMunicipio(@PathParam("id") long id){
+    public MunicipioDto getMunicipio(@PathParam("id") long id){
         return municipioService.getMunicipio(id);
     }
 
     @POST
     @Transactional
-    public Response create(@Valid @ConvertGroup(to= MunicipioDtoRequest.OnCreate.class) MunicipioDtoRequest dto){
+    public Response create(@Valid @ConvertGroup(to= MunicipioDto.OnCreate.class) MunicipioDto dto){
         return municipioService.insert(dto);
     }
 
     @PUT
     @Transactional
     @Path("{id}")
-    public Response update(@PathParam("id") long id, @Valid MunicipioDtoRequest dto){
+    public Response update(@PathParam("id") long id, @Valid MunicipioDto dto){
         return municipioService.update(id,dto);
     }
 

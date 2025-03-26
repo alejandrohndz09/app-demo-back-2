@@ -1,8 +1,6 @@
 package com.example.resource;
 
-import com.example.dto.DepartamentoDtoRequest;
-import com.example.dto.DepartamentoDtoRequest;
-import com.example.service.ReportesService;
+import com.example.dto.DepartamentoDto;
 import com.example.service.interfaces.DepartamentoService;
 import com.example.tools.PaginatedResponse;
 import jakarta.inject.Inject;
@@ -22,32 +20,32 @@ public class DepartamentoResource {
     DepartamentoService departamentoService;
 
     @GET
-    public List<DepartamentoDtoRequest> getDepartamentos() {
+    public List<DepartamentoDto> getDepartamentos() {
         return departamentoService.getDepartamentos();
     }
 
     @GET
     @Path("paginated")
-    public PaginatedResponse<DepartamentoDtoRequest> getDepartamentos(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q) {
+    public PaginatedResponse<DepartamentoDto> getDepartamentos(@QueryParam("p") @DefaultValue("1") int p, @QueryParam("q") String q) {
         return departamentoService.getDepartamentosP(p, q);
     }
 
     @GET
     @Path("{id}")
-    public DepartamentoDtoRequest getDepartamento(@PathParam("id") long id) {
+    public DepartamentoDto getDepartamento(@PathParam("id") long id) {
         return departamentoService.getDepartamento(id);
     }
 
     @POST
     @Transactional
-    public Response create(@Valid @ConvertGroup(to = DepartamentoDtoRequest.OnCreate.class) DepartamentoDtoRequest dto) {
+    public Response create(@Valid @ConvertGroup(to = DepartamentoDto.OnCreate.class) DepartamentoDto dto) {
         return departamentoService.insert(dto);
     }
 
     @PUT
     @Transactional
     @Path("{id}")
-    public Response update(@PathParam("id") long id, @Valid DepartamentoDtoRequest dto) {
+    public Response update(@PathParam("id") long id, @Valid DepartamentoDto dto) {
         return departamentoService.update(id, dto);
     }
 

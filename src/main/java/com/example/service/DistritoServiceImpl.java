@@ -1,8 +1,7 @@
 package com.example.service;
 
 import com.example.domain.Distrito;
-import com.example.dto.DistritoDtoDetail;
-import com.example.dto.DistritoDtoRequest;
+import com.example.dto.DistritoDto;
 import com.example.dto.mapper.DistritoMapper;
 import com.example.repository.DistritoRepository;
 import com.example.service.interfaces.DistritoService;
@@ -13,7 +12,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import net.sf.jasperreports.engine.JRException;
-import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
 import java.sql.SQLException;
@@ -30,15 +28,15 @@ public class DistritoServiceImpl implements DistritoService {
     private DistritoMapper mapper;
 
     @Override
-    public List<DistritoDtoRequest> getDistritos() {
+    public List<DistritoDto> getDistritos() {
 
-        return distritoRepository.findAll()//.project(DistritoDtoRequest.class).list();
+        return distritoRepository.findAll()//.project(DistritoDto.class).list();
                 .stream().map(mapper::toDtoDetail
                 ).toList();
     }
 
     @Override
-    public PaginatedResponse<DistritoDtoRequest> getDistritosP(int page, String q) {
+    public PaginatedResponse<DistritoDto> getDistritosP(int page, String q) {
         var query = distritoRepository.findAll();
         //Aplicacion de filtro
         if (q != null) {
@@ -48,7 +46,7 @@ public class DistritoServiceImpl implements DistritoService {
         Page p = new Page(page - 1, 5);
         query.page(p);
         //Conversion de los registros a DTO
-        var queryConverted = query.project(DistritoDtoRequest.class);
+        var queryConverted = query.project(DistritoDto.class);
         //Encapsular Respuesta
         var pr = new PaginatedResponse<>(queryConverted);
         if (pr.data() != null && !pr.data().isEmpty()) {
@@ -58,14 +56,14 @@ public class DistritoServiceImpl implements DistritoService {
     }
 
     @Override
-    public DistritoDtoRequest getDistrito(long id) {
+    public DistritoDto getDistrito(long id) {
         return distritoRepository.findByIdOptional(id)
                 .map(mapper::toDtoDetail)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el registro"));
     }
 
     @Override
-    public Response insert(DistritoDtoRequest dto) {
+    public Response insert(DistritoDto dto) {
         var entity = new Distrito();
         mapper.toEntity(dto,entity); //Conversion de DTO -> Entity
         distritoRepository.persist(entity); //Insercion
@@ -78,7 +76,7 @@ public class DistritoServiceImpl implements DistritoService {
     }
 
     @Override
-    public Response update(long id, DistritoDtoRequest dto) {
+    public Response update(long id, DistritoDto dto) {
         var original = distritoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
 

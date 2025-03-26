@@ -1,8 +1,7 @@
 package com.example.service;
 
 import com.example.domain.Municipio;
-import com.example.dto.MunicipioDtoRequest;
-import com.example.dto.MunicipioDtoRequest;
+import com.example.dto.MunicipioDto;
 import com.example.dto.mapper.MunicipioMapper;
 import com.example.repository.MunicipioRepository;
 import com.example.service.interfaces.MunicipioService;
@@ -31,13 +30,13 @@ public class MunicipioServiceImpl implements MunicipioService {
     private MunicipioMapper mapper;
 
     @Override
-    public List<MunicipioDtoRequest> getMunicipios() {
-        return municipioRepository.findAll()//.project(MunicipioDtoRequest.class).list();
+    public List<MunicipioDto> getMunicipios() {
+        return municipioRepository.findAll()//.project(MunicipioDto.class).list();
                 .stream().map(mapper::toDtoDetail).toList();
     }
 
     @Override
-    public PaginatedResponse<MunicipioDtoRequest> getMunicipiosP(int page, String q) {
+    public PaginatedResponse<MunicipioDto> getMunicipiosP(int page, String q) {
         var query = municipioRepository.findAll();
         //Aplicacion de filtro
         if (q != null) {
@@ -47,7 +46,7 @@ public class MunicipioServiceImpl implements MunicipioService {
         Page p = new Page(page - 1, 5);
         query.page(p);
         //Conversion de los registros a DTO
-        var queryConverted = query.project(MunicipioDtoRequest.class);
+        var queryConverted = query.project(MunicipioDto.class);
         //Encapsular Respuesta
         var pr = new PaginatedResponse<>(queryConverted);
         if (pr.data() != null && !pr.data().isEmpty()) {
@@ -57,14 +56,14 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
-    public MunicipioDtoRequest getMunicipio(long id) {
+    public MunicipioDto getMunicipio(long id) {
         return municipioRepository.findByIdOptional(id)
                 .map(mapper::toDtoDetail)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el registro"));
     }
 
     @Override
-    public Response insert(MunicipioDtoRequest dto) {
+    public Response insert(MunicipioDto dto) {
         var entity = new Municipio();
         mapper.toEntity(dto, entity); //Conversion de DTO -> Entity
         municipioRepository.persist(entity); //Insercion
@@ -76,7 +75,7 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
-    public Response update(long id, MunicipioDtoRequest dto) {
+    public Response update(long id, MunicipioDto dto) {
         var original = municipioRepository.findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró registro"));
 
